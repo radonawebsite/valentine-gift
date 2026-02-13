@@ -3,178 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Museum of Us | Meryem</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>THE ARCHIVES // MERYEM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
-            --dark-red: #0f0202;
-            --gold: #b39359;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
+            --primary: #FF0000;
+            --bg: #000000;
+            --text: #FFFFFF;
+            --border-thin: 1px solid rgba(255,255,255,0.2);
+            --border-thick: 4px solid #FFFFFF;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        body {
-            background: var(--dark-red);
-            color: #f2f2f2;
-            font-family: 'Inter', sans-serif;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: 'Space Mono', monospace;
             overflow-x: hidden;
         }
 
-        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
-
-        /* Welcome Screen */
-        #overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--dark-red); z-index: 9999; display: flex;
-            flex-direction: column; justify-content: center; align-items: center;
-            transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Loading / Start */
+        #entry-gate {
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-        .enter-btn {
-            padding: 20px 50px; border: 1px solid var(--gold); background: transparent;
-            color: var(--gold); cursor: pointer; font-family: 'Playfair Display', serif;
-            font-size: 1.1rem; border-radius: 2px; letter-spacing: 4px; transition: 0.6s;
+        .start-trigger {
+            background: none; border: var(--border-thick); color: #fff;
+            padding: 20px 60px; font-family: 'Archivo Black', sans-serif;
+            font-size: 1.5rem; cursor: pointer; transition: 0.3s;
         }
-        .enter-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 30px rgba(179, 147, 89, 0.2); }
+        .start-trigger:hover { background: #fff; color: #000; }
 
+        /* Main Layout */
         section {
-            min-height: 100vh; display: flex; justify-content: center;
-            align-items: center; padding: 80px 20px; position: relative;
+            min-height: 100vh; width: 100%; display: flex; align-items: center;
+            padding: 5vw; border-bottom: var(--border-thin);
+            position: relative;
         }
 
-        .glass-chamber {
-            background: var(--glass);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--border);
-            padding: 60px 40px; border-radius: 4px;
-            max-width: 600px; width: 100%; text-align: center;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.6);
+        /* Large Background Numbers (Style like '00') */
+        .bg-number {
+            position: absolute; right: 5%; top: 10%;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 15vw; color: rgba(255,255,255,0.03);
+            z-index: -1; line-height: 1;
         }
 
-        .label { font-size: 0.6rem; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; margin-bottom: 30px; display: block; opacity: 0.8; }
-        h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--gold); margin-bottom: 25px; font-weight: 400; font-style: italic; }
-        p { font-weight: 300; line-height: 2; font-size: 1.05rem; opacity: 0.85; margin-bottom: 35px; }
-
-        .next-btn {
-            display: inline-block; padding: 15px 30px; border: 1px solid var(--border);
-            color: var(--gold); text-decoration: none; font-size: 0.7rem;
-            letter-spacing: 3px; transition: 0.4s;
+        /* The "Window" Card */
+        .window-frame {
+            border: 2px solid #fff; background: #0a0a0a;
+            width: 100%; max-width: 700px;
+            box-shadow: 15px 15px 0px var(--primary);
+            position: relative;
         }
-        .next-btn:hover { border-color: var(--gold); background: rgba(179, 147, 89, 0.05); }
+        .window-top {
+            background: #fff; color: #000; padding: 5px 15px;
+            font-weight: bold; display: flex; justify-content: space-between;
+            font-size: 0.8rem;
+        }
+        .window-body { padding: 40px; }
 
-        .shaman-note {
-            margin-top: 40px; padding: 25px; background: rgba(0,0,0,0.2);
-            border: 1px solid rgba(179, 147, 89, 0.15); font-size: 0.9rem; font-style: italic; color: #d1d1d1;
-            line-height: 1.6;
+        .tag-label {
+            background: var(--primary); color: #fff;
+            display: inline-block; padding: 4px 12px;
+            font-size: 0.7rem; font-weight: bold; margin-bottom: 20px;
         }
 
-        @media (max-width: 768px) {
-            h2 { font-size: 1.9rem; }
-            .glass-chamber { padding: 45px 25px; }
+        h2 { 
+            font-family: 'Archivo Black', sans-serif; font-size: 2.5rem;
+            text-transform: uppercase; line-height: 1.1; margin-bottom: 25px;
+            color: var(--text);
         }
+
+        p { font-size: 1.1rem; line-height: 1.7; opacity: 0.8; }
+
+        .shaman-alert {
+            margin-top: 30px; border-top: 1px dashed var(--primary);
+            padding-top: 20px; color: var(--primary); font-size: 0.9rem;
+        }
+
+        .scroll-hint {
+            position: absolute; bottom: 30px; left: 5vw;
+            font-size: 0.7rem; letter-spacing: 2px;
+        }
+
+        /* Audio Player hidden */
+        #bg-music { display: none; }
+
     </style>
 </head>
 <body>
 
-    <div id="overlay">
-        <span class="label" style="margin-bottom: 10px;">Private Collection</span>
-        <h2 style="margin-bottom: 40px; color: #fff; font-size: 1.8rem;">The Museum of Us</h2>
-        <button class="enter-btn" onclick="startExperience()">UNVEIL GALLERY</button>
+    <div id="entry-gate">
+        <h1 style="font-family:'Archivo Black'; margin-bottom: 20px;">SYSTEM.RADONA_01</h1>
+        <button class="start-trigger" onclick="init()">RUN ACCESS</button>
     </div>
 
-    <audio id="main-audio" loop>
+    <audio id="bg-music" loop>
         <source src="https://www.chosic.com/wp-content/uploads/2021/04/Warm-memories-Emotional-Inspiring-Piano.mp3" type="audio/mpeg">
     </audio>
 
-    <canvas id="bg-canvas"></canvas>
-
-    <section id="room1">
-        <div class="glass-chamber" data-aos="fade-up">
-            <span class="label">Hall I | Dec 26</span>
-            <h2>The Legend of Radoumi</h2>
-            <p>I remember December 26th—the day I gave you my very first gift. It was a Kuromi plush, but you gave it a soul when you named it <b>"Radoumi"</b>. A name that forever binds my identity (Radona) with yours. It was our first masterpiece.</p>
-            <a href="#room2" class="next-btn">PROCEED</a>
-        </div>
-    </section>
-
-    <section id="room2">
-        <div class="glass-chamber" data-aos="fade-up">
-            <span class="label">Hall II | Dec 29</span>
-            <h2>The Honest Chaos</h2>
-            <p>On the 29th, I spoke the truth that my heart couldn't contain any longer. Terrified yet certain, I took a leap into the unknown just to be yours.</p>
-            <div class="shaman-note">
-                "Ikram the Shaman already predicted this. She saw our story unfolding and is still waiting for her <b>Msmen</b> reward. Fate had a plan, and she was its messenger."
+    <section>
+        <div class="bg-number">01</div>
+        <div class="window-frame" data-aos="fade-right">
+            <div class="window-top"><span>DATA_ENTRY: 26_DEC</span> <span>[X]</span></div>
+            <div class="window-body">
+                <span class="tag-label">OBJECT IDENTIFIED: RADOUMI</span>
+                <h2>The First Offering</h2>
+                <p>A Kuromi plush that carried the weight of my heart. You merged my name with the doll, and <b>Radoumi</b> was born. A simple gift turned into a legendary symbol of us.</p>
             </div>
-            <a href="#room3" class="next-btn" style="margin-top: 30px;">THE JANUARY VOW</a>
+        </div>
+        <div class="scroll-hint">SCROLL_FOR_MORE >></div>
+    </section>
+
+    <section>
+        <div class="bg-number">02</div>
+        <div class="window-frame" data-aos="fade-left" style="box-shadow: 15px 15px 0px #fff; border-color: var(--primary);">
+            <div class="window-top" style="background: var(--primary); color:#fff;"><span>INCIDENT_REPORT: 29_DEC</span> <span>[!]</span></div>
+            <div class="window-body">
+                <span class="tag-label" style="background:#fff; color:#000;">THE CONFESSION</span>
+                <h2>Honest Chaos</h2>
+                <p>Terrified and trembling. I spoke words I couldn't hold back. I thought I'd lose a friend, but I was building a future.</p>
+                <div class="shaman-alert">
+                    // ALERT: IKRAM_THE_SHAMAN PREDICTED THIS.
+                    // STATUS: WAITING FOR MSMEN.
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="room3">
-        <div class="glass-chamber" data-aos="zoom-in" style="border-color: var(--gold);">
-            <span class="label">Hall III | Jan 5, 2025</span>
-            <h2>A Lifetime Promise</h2>
-            <p>That phone call was the moment whispers became reality. I promised you marriage, a future, and a devotion that never fades. My ears were red, my voice was low, but my soul was finally home.</p>
-            <a href="#final" class="next-btn">FINAL EXHIBIT</a>
+    <section>
+        <div class="bg-number">03</div>
+        <div class="window-frame" data-aos="zoom-in">
+            <div class="window-top"><span>PROTOCOL: THE_COVENANT</span> <span>[ACTIVE]</span></div>
+            <div class="window-body">
+                <span class="tag-label">JAN_05_2025</span>
+                <h2>The Promise</h2>
+                <p>The phone call. No games, just marriage. My ears were burning, my voice was lost, but I knew. That day, Meryem, you became my world.</p>
+            </div>
         </div>
     </section>
 
-    <section id="final">
-        <div class="glass-chamber" data-aos="fade-up">
-            <h2 style="font-size: 3rem;">Forever Yours</h2>
-            <p>I will never let go. You are my home, my future, and my greatest truth. Our story has just begun.</p>
-            <span class="label" style="color:#fff; margin-bottom: 10px;">To my dearest Meryem,</span>
-            <h2 style="font-size: 1.6rem; margin-top:0px;">Will you be my Valentine?</h2>
-            <p style="font-size: 0.6rem; margin-top: 60px; opacity: 0.4; letter-spacing: 3px;">CURATED BY RADONA | 2026</p>
+    <section style="background: var(--primary); color: #000;">
+        <div data-aos="flip-up">
+            <h1 style="font-family:'Archivo Black'; font-size: 10vw; line-height: 0.9;">VALENTINE 2026?</h1>
+            <p style="margin-top: 20px; font-weight: bold;">[Y/N] _ STICKING WITH YOU FOREVER.</p>
         </div>
     </section>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1800 });
-
-        function startExperience() {
-            document.getElementById('overlay').style.opacity = '0';
-            setTimeout(() => { document.getElementById('overlay').style.display = 'none'; }, 1500);
-            const audio = document.getElementById('main-audio');
-            audio.volume = 0.4;
-            audio.play();
+        AOS.init({ duration: 800 });
+        function init() {
+            document.getElementById('entry-gate').style.display = 'none';
+            const music = document.getElementById('bg-music');
+            music.volume = 0.3;
+            music.play();
         }
-
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        class P {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.v = Math.random() * 0.2 + 0.05;
-                this.s = Math.random() * 1.2;
-            }
-            draw() {
-                ctx.fillStyle = "rgba(179, 147, 89, 0.15)";
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.s, 0, Math.PI*2);
-                ctx.fill();
-                this.y -= this.v;
-                if(this.y < 0) this.y = canvas.height;
-            }
-        }
-        for(let i=0; i<80; i++) particles.push(new P());
-        function anim() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            particles.forEach(p => p.draw());
-            requestAnimationFrame(anim);
-        }
-        anim();
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
     </script>
 </body>
 </html>
