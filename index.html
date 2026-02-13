@@ -3,242 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meryem | The Eternal Archive</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;500;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <title>For Meryem | The Archives</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Montserrat:wght@200;400&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
-            --dark-red: #1a0202;
-            --bright-red: #ff0000;
-            --accent: #ff3333;
-            --glass: rgba(20, 0, 0, 0.6);
+            --bg-color: #0a0101;
+            --dark-red: #4d0000;
+            --gold-subtle: #d4af37; /* لمسة ذهبية خفيفة للرقي */
+            --text-main: #e0e0e0;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: var(--dark-red);
-            color: white;
-            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
-            height: 100%;
+            line-height: 1.6;
         }
 
-        #canvas-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
+        /* Subtle Background Glow */
+        .bg-glow {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 80vw; height: 80vw;
+            background: radial-gradient(circle, rgba(77, 0, 0, 0.15) 0%, transparent 70%);
+            z-index: -1; pointer-events: none;
         }
 
-        /* Loading Overlay */
-        #loader {
-            position: fixed; inset: 0; background: black; z-index: 9999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-        }
-        .loading-text {
-            font-family: 'Syncopate', sans-serif; font-size: 1rem; letter-spacing: 5px;
-            animation: pulse 2s infinite; color: var(--bright-red);
-        }
-
-        /* Hero Section */
+        /* Hero */
         .hero {
             height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
         }
         .hero h1 {
-            font-family: 'Syncopate', sans-serif; font-size: 10vw;
-            line-height: 0.8; text-transform: uppercase;
-            background: linear-gradient(to bottom, #fff, #660000);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 300; letter-spacing: 15px;
+            text-transform: uppercase; color: #fff;
+            margin-bottom: 20px;
         }
+        .hero p { font-size: 0.8rem; letter-spacing: 5px; opacity: 0.5; text-transform: uppercase; }
 
-        /* Timeline Content */
+        /* Story Sections */
         .section {
             min-height: 100vh; display: flex; align-items: center;
             justify-content: center; padding: 100px 20px;
-            perspective: 1000px;
         }
 
-        .glass-box {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 50px; border-radius: 4px;
-            max-width: 800px; width: 100%;
-            transform-style: preserve-3d;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.5);
+        .content-card {
+            max-width: 700px; width: 100%; text-align: center;
             position: relative;
         }
 
-        .date-badge {
-            font-family: 'Syncopate', sans-serif; font-size: 0.8rem;
-            color: var(--bright-red); margin-bottom: 20px; display: block;
-            border-left: 3px solid var(--bright-red); padding-left: 15px;
+        .date {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic; font-size: 1.2rem; color: var(--gold-subtle);
+            margin-bottom: 30px; display: block; opacity: 0.8;
         }
 
-        h2 { font-family: 'Syncopate', sans-serif; font-size: 2.5rem; margin-bottom: 25px; color: #fff; }
-        p { font-size: 1.2rem; line-height: 1.8; opacity: 0.8; margin-bottom: 30px; font-weight: 300; }
-
-        .shaman-card {
-            background: rgba(255, 0, 0, 0.1); border: 1px dashed var(--bright-red);
-            padding: 20px; border-radius: 4px; font-size: 0.95rem;
-            font-style: italic; color: #ff9999;
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 400; color: #fff; margin-bottom: 30px;
+            letter-spacing: 2px;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: var(--bright-red); }
-
-        /* Floating Hearts */
-        .floating-heart {
-            position: absolute; color: var(--bright-red);
-            font-size: 1.5rem; pointer-events: none; opacity: 0;
+        .text-body {
+            font-size: 1.1rem; font-weight: 200; opacity: 0.7;
+            max-width: 550px; margin: 0 auto 40px auto;
         }
 
-        #final-msg {
-            font-family: 'Dancing Script', cursive; font-size: 4rem;
-            color: var(--bright-red); text-shadow: 0 0 20px rgba(255,0,0,0.5);
+        /* Decorative Line */
+        .line {
+            width: 1px; height: 80px; background: linear-gradient(to bottom, transparent, var(--dark-red), transparent);
+            margin: 40px auto;
+        }
+
+        /* Shaman Note - Elegant Style */
+        .shaman-note {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic; font-size: 1rem; color: #884444;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 20px; margin-top: 20px;
+        }
+
+        /* Final Button */
+        .final-btn {
+            background: transparent; border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; padding: 20px 50px; cursor: pointer;
+            font-family: 'Montserrat', sans-serif; font-size: 0.7rem;
+            letter-spacing: 4px; text-transform: uppercase;
+            transition: 0.5s;
+        }
+        .final-btn:hover { border-color: #fff; background: #fff; color: #000; }
+
+        #audio-trigger {
+            position: fixed; bottom: 30px; right: 30px;
+            background: none; border: none; color: #fff;
+            font-size: 0.6rem; letter-spacing: 2px; cursor: pointer; opacity: 0.5;
         }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="loading-text">INITIALIZING CORE...</div>
-        <button id="start-btn" style="display:none; margin-top:20px; padding:10px 30px; background:var(--bright-red); color:white; border:none; cursor:pointer; font-family:'Syncopate';">UNLOCK ARCHIVE</button>
-    </div>
-
-    <div id="canvas-container"></div>
+    <div class="bg-glow"></div>
 
     <audio id="bg-music" loop>
         <source src="https://www.chosic.com/wp-content/uploads/2021/04/Warm-memories-Emotional-Inspiring-Piano.mp3" type="audio/mpeg">
     </audio>
+    <button id="audio-trigger" onclick="toggleAudio()">SOUND OFF</button>
 
     <div class="hero">
-        <h1 data-gsap="fade-up">MERYEM</h1>
-        <p style="letter-spacing: 10px; font-weight: 300; margin-top: 20px;">[ THE FOREVER LOGS ]</p>
+        <h1 data-aos="fade-up" data-aos-duration="2000">Meryem</h1>
+        <p data-aos="fade-up" data-aos-delay="500">A Collection of Sacred Memories</p>
+        <div class="line"></div>
     </div>
 
-    <div class="section">
-        <div class="glass-box" data-gsap="reveal">
-            <span class="date-badge">SATURDAY | DECEMBER 26, 2024</span>
-            <h2>The "Radoumi" Origin</h2>
-            <p>On this precise day, a gift transcended its physical form. I handed you a Kuromi plush, but your heart saw more. You named it <b>Radoumi</b>—a fusion of our souls (Radona + Meryem). It was the day our shared identity began.</p>
+    <section class="section">
+        <div class="content-card" data-aos="fade-up">
+            <span class="date">December 26, 2024</span>
+            <h2>Radoumi’s Origin</h2>
+            <p class="text-body">A simple gift that found its soul in your hands. On this day, the name <b>Radoumi</b> was born—a quiet whisper that our two lives were becoming one.</p>
+            <div class="line"></div>
         </div>
-    </div>
+    </section>
 
-    <div class="section">
-        <div class="glass-box" data-gsap="reveal">
-            <span class="date-badge">TUESDAY | DECEMBER 29, 2024</span>
-            <h2>The Beautiful Confession</h2>
-            <p>Chaos turned into clarity. I broke the silence with words that were heavy with love and light with truth. I chose to risk everything just to be yours.</p>
-            <div class="shaman-card">
-                // SYSTEM LOG: Ikram the Shaman (The Prophet) knew this before us. 
-                // STATUS: Msmen payment for Ikram is still pending. 
+    <section class="section">
+        <div class="content-card" data-aos="fade-up">
+            <span class="date">December 29, 2024</span>
+            <h2>The Honest Truth</h2>
+            <p class="text-body">The day the heart refused to stay silent. A confession born from the fear of loss and the hope of a lifetime together.</p>
+            <div class="shaman-note">
+                "Ikram the Shaman already saw the stars align. Her prophecy remains our beginning."
             </div>
+            <div class="line"></div>
         </div>
-    </div>
+    </section>
 
-    <div class="section">
-        <div class="glass-box" data-gsap="reveal">
-            <span class="date-badge">SUNDAY | JANUARY 05, 2025</span>
-            <h2>The Covenant of Forever</h2>
-            <p>That phone call was the most important meeting of my life. I didn't want a "story"; I wanted a life. Marriage, home, and eternity. My ears were burning, my voice was shaking, but Meryem, my heart was finally HOME.</p>
+    <section class="section">
+        <div class="content-card" data-aos="fade-up">
+            <span class="date">January 05, 2025</span>
+            <h2>The Eternal Vow</h2>
+            <p class="text-body">A conversation that defined our future. No more games, only the sacred intent of marriage and a life shared. My heart finally found its home in you.</p>
+            <div class="line"></div>
         </div>
-    </div>
+    </section>
 
-    <div class="section" style="text-align: center;">
-        <div data-gsap="zoom-in">
-            <h1 id="final-msg">Will you be my Valentine?</h1>
-            <p style="font-family:'Syncopate'; font-size: 0.8rem; margin-top: 20px;">TO: MERYEM_01 // FROM: RADONA</p>
-            <p style="margin-top: 50px; opacity: 0.4;">[ SCROLL TO END THE ARCHIVE ]</p>
+    <section class="section">
+        <div class="content-card" data-aos="zoom-in">
+            <h2 style="font-style: italic;">Will you be my Valentine?</h2>
+            <p style="font-size: 0.7rem; letter-spacing: 5px; opacity: 0.4; margin-top: 30px;">ALWAYS YOURS, RADONA</p>
         </div>
-    </div>
+    </section>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Three.js Background (Future Visuals)
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
+        AOS.init({ duration: 1500, once: true });
 
-        const particlesGeometry = new THREE.BufferGeometry();
-        const posArray = new Float32Array(5000 * 3);
-        for(let i=0; i<5000*3; i++) posArray[i] = (Math.random() - 0.5) * 10;
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const material = new THREE.PointsMaterial({ size: 0.005, color: 0xff0000 });
-        const particlesMesh = new THREE.Points(particlesGeometry, material);
-        scene.add(particlesMesh);
-        camera.position.z = 2;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            particlesMesh.rotation.y += 0.001;
-            particlesMesh.rotation.x += 0.0005;
-            renderer.render(scene, camera);
+        const audio = document.getElementById('bg-music');
+        const trigger = document.getElementById('audio-trigger');
+        
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play();
+                trigger.innerText = "SOUND ON";
+                trigger.style.opacity = "1";
+            } else {
+                audio.pause();
+                trigger.innerText = "SOUND OFF";
+                trigger.style.opacity = "0.5";
+            }
         }
-        animate();
-
-        // GSAP Animations
-        gsap.registerPlugin(ScrollTrigger);
-
-        function initGSAP() {
-            gsap.utils.toArray('.section').forEach((section, i) => {
-                gsap.from(section.querySelector('.glass-box'), {
-                    scrollTrigger: {
-                        trigger: section,
-                        start: "top 80%",
-                        toggleActions: "play none none reverse"
-                    },
-                    y: 100,
-                    opacity: 0,
-                    rotationX: -20,
-                    duration: 1.5,
-                    ease: "power4.out"
-                });
-            });
-        }
-
-        // Loader and Music
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('loader');
-            const startBtn = document.getElementById('start-btn');
-            const loadingText = document.querySelector('.loading-text');
-            
-            loadingText.innerText = "ACCESS GRANTED.";
-            startBtn.style.display = "block";
-        });
-
-        function startApp() {
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('bg-music').play();
-            initGSAP();
-            
-            // Trigger confetti on the question
-            ScrollTrigger.create({
-                trigger: "#final-msg",
-                onEnter: () => {
-                    confetti({
-                        particleCount: 150,
-                        spread: 70,
-                        origin: { y: 0.6 },
-                        colors: ['#ff0000', '#660000', '#ffffff']
-                    });
-                }
-            });
-        }
-
-        document.getElementById('start-btn').addEventListener('click', startApp);
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+        
+        // Start audio on first click anywhere
+        window.addEventListener('click', () => {
+            if(audio.paused) toggleAudio();
+        }, { once: true });
     </script>
 </body>
 </html>
