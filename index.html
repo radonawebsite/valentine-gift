@@ -2,217 +2,180 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>To My Eternal Love | Radona</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Museum of Us | For Maryam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
-            --dark-red: #1a0507;
-            --blood-red: #470b12;
-            --accent: #d4af37; /* Gold */
-            --text: #f8f9fa;
+            --dark-red: #1a0505;
+            --gold: #d4af37;
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background-color: var(--dark-red);
-            color: var(--text);
+            color: white;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            line-height: 1.6;
         }
 
-        /* Ambient Background */
-        #bg-canvas {
+        /* Background Music Control */
+        #music-control {
             position: fixed;
-            top: 0; left: 0;
-            z-index: -1;
-            background: radial-gradient(circle at center, var(--blood-red) 0%, var(--dark-red) 100%);
+            top: 20px; right: 20px;
+            z-index: 1000;
+            background: var(--glass);
+            padding: 10px;
+            border-radius: 50%;
+            border: 1px solid var(--gold);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
         }
 
+        /* Sections Styling */
         section {
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 25px;
-            perspective: 1000px;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
         }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px 30px;
-            border-radius: 25px;
-            text-align: center;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        .museum-label {
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+            opacity: 0.7;
         }
 
         h1, h2 {
             font-family: 'Playfair Display', serif;
-            color: var(--accent);
-            margin-bottom: 15px;
-        }
-
-        .hero-title {
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
             font-style: italic;
-            line-height: 1.1;
-        }
-
-        p {
-            font-size: clamp(1rem, 4vw, 1.15rem);
-            font-weight: 300;
-            opacity: 0.85;
+            color: var(--gold);
             margin-bottom: 20px;
         }
 
-        .divider {
-            width: 50px;
-            height: 1px;
-            background: var(--accent);
-            margin: 25px auto;
-            opacity: 0.6;
+        .content-box {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            max-width: 600px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
 
-        .date-badge {
+        p { line-height: 1.8; font-weight: 300; font-size: 1.1rem; opacity: 0.9; }
+
+        /* Hall 3 Special Styling (The Covenant) */
+        .hall-3 {
+            background: radial-gradient(circle at center, #4b0d13 0%, #1a0505 100%);
+        }
+        .shaman-hint {
+            font-size: 0.8rem;
+            margin-top: 20px;
+            color: var(--gold);
+            font-style: italic;
+            opacity: 0.5;
+        }
+
+        /* Animated Background Particles */
+        #particles-js {
+            position: fixed;
+            width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        footer {
+            padding: 40px;
             font-size: 0.7rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--accent);
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        /* Heart Animation */
-        .floating-heart {
-            font-size: 40px;
-            filter: drop-shadow(0 0 10px var(--accent));
-            animation: floatHeart 4s ease-in-out infinite;
-            margin-bottom: 10px;
-        }
-
-        @keyframes floatHeart {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-15px) scale(1.1); }
-        }
-
-        .scroll-hint {
-            position: absolute;
-            bottom: 20px;
-            font-size: 0.7rem;
-            opacity: 0.4;
             letter-spacing: 2px;
-            animation: pulse 2s infinite;
+            opacity: 0.4;
         }
 
-        @keyframes pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.6; } }
-
-        /* Hide cursor follower on mobile */
+        /* Mobile Adjustments */
         @media (max-width: 768px) {
-            #cursor { display: none; }
-            .glass-card { padding: 30px 20px; }
+            h1 { font-size: 2.5rem; }
+            .content-box { padding: 30px 20px; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
+    <iframe id="youtube-player" style="display:none;" 
+        src="https://www.youtube.com/embed/o_1aF57DQ5E?autoplay=1&loop=1&playlist=o_1aF57DQ5E" 
+        allow="autoplay">
+    </iframe>
+
+    <div id="particles-js"></div>
 
     <section>
-        <div data-aos="zoom-out" style="text-align: center;">
-            <div class="floating-heart">❤️</div>
-            <h1 class="hero-title">Our Eternal Symphony</h1>
-            <div class="divider"></div>
-            <p>Every second with you is a masterpiece.</p>
-            <div class="scroll-hint">SWIPE UP</div>
+        <div data-aos="fade-in" data-aos-duration="3000">
+            <span class="museum-label">Now Entering</span>
+            <h1 style="font-size: 4rem;">The Museum of Us</h1>
+            <p>A journey through the chapters of my heart.</p>
+            <div style="margin-top: 40px; animation: bounce 2s infinite;">↓ Scroll to Begin</div>
         </div>
     </section>
 
     <section>
-        <div class="glass-card" data-aos="fade-up">
-            <span class="date-badge">The Prologue</span>
-            <h2>How It Started</h2>
-            <p>In a world of billions, destiny chose us. From the very first moment, my heart recognized yours, and my soul finally found its home.</p>
+        <div class="content-box" data-aos="fade-up">
+            <span class="museum-label">Hall I: December 26</span>
+            <h2>The First Offering</h2>
+            <p>Before you, I never knew the joy of giving. Bringing you that <b>Kuromi</b> plush was the first time I ever offered a piece of my world to someone else. That day, I didn't just give a gift; I gave you my first "Yes" to a life I never knew existed.</p>
         </div>
     </section>
 
     <section>
-        <div class="glass-card" data-aos="fade-up">
-            <span class="date-badge">The Promise</span>
-            <h2>My Eternal Vow</h2>
-            <p>I promise to love you through the silence and the noise, through the highs and the lows. You are my greatest adventure and my favorite "Yes".</p>
+        <div class="content-box" data-aos="zoom-in" style="border-color: #660708;">
+            <span class="museum-label">Hall II: December 29, 2024</span>
+            <h2>A Leap of Faith</h2>
+            <p>Random. Chaotic. Terrifying. I confessed my love with hands trembling and a heart racing, terrified of losing a friend but unable to hide the truth any longer. It was the most beautiful chaos I’ve ever experienced.</p>
+        </div>
+    </section>
+
+    <section class="hall-3">
+        <div class="content-box" data-aos="flip-up" style="border: 2px solid var(--gold); background: rgba(212, 175, 55, 0.05);">
+            <span class="museum-label" style="opacity: 1;">Hall III: January 5, 2025</span>
+            <h2 style="font-size: 2.5rem;">The Covenant</h2>
+            <p>A phone call that shifted the universe. I told you I wasn't here for a fleeting game, but for <b>Marriage</b>. I remember the heat in my ears, the shyness in my voice, and the moment you said "Yes" to our future.</p>
+            <p class="shaman-hint">Dedicated to Ikram "The Shaman" & the legendary Msmen prophecy.</p>
         </div>
     </section>
 
     <section>
-        <div data-aos="zoom-in" style="text-align: center;">
-            <h2 style="font-size: 2.5rem;">Happy Valentine's Day</h2>
-            <p style="opacity: 0.7;">Forever isn't long enough when I'm with you.</p>
-            <div class="divider"></div>
-            <p style="font-size: 0.8rem; letter-spacing: 2px;">Handcrafted for you by <b>Radona</b></p>
+        <div data-aos="fade-up">
+            <span class="museum-label">Final Exhibit: February 14, 2026</span>
+            <h2 style="font-size: 3rem;">Forever is Just the Start</h2>
+            <p style="max-width: 500px; margin: 0 auto;">I will never let go. I will never stop loving you. You are my home, my peace, and my eternity.</p>
+            <h1 style="margin-top: 40px;">Will you be my Valentine?</h1>
         </div>
+        <footer>HANDCRAFTED BY RADONA | 2026</footer>
     </section>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Initialize Animations
-        AOS.init({ duration: 1200, once: false, mirror: true });
+        AOS.init({ duration: 1500 });
 
-        // Particle System
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.5;
-                this.speedY = Math.random() * -0.5 - 0.1;
-                this.opacity = Math.random() * 0.5;
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80 },
+                "color": { "value": "#d4af37" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 2, "random": true },
+                "line_linked": { "enable": false },
+                "move": { "enable": true, "speed": 1, "direction": "top" }
             }
-            update() {
-                this.y += this.speedY;
-                if (this.y < 0) {
-                    this.y = canvas.height;
-                    this.x = Math.random() * canvas.width;
-                }
-            }
-            draw() {
-                ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function createParticles() {
-            const count = window.innerWidth < 768 ? 50 : 120;
-            for (let i = 0; i < count; i++) particles.push(new Particle());
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', () => { init(); particles = []; createParticles(); });
-        init();
-        createParticles();
-        animate();
+        });
     </script>
 </body>
 </html>
