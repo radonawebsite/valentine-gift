@@ -3,170 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Sweet Story | Meryem</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <title>The Dark Red Archives | Meryem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
-            --soft-pink: #ffdde1;
-            --love-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            --text-color: #5d4037;
+            --dark-red: #2b0303;
+            --blood-red: #660000;
+            --accent-red: #cc0000;
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
         body {
-            background: #fff5f7;
-            color: var(--text-color);
-            font-family: 'Quicksand', sans-serif;
+            background-color: #080101;
+            color: #f5f5f5;
+            font-family: 'Lora', serif;
             overflow-x: hidden;
         }
 
-        /* Floating Hearts Background */
-        .bg-hearts {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
+        /* Ambient Dark Red Glows */
+        .glow {
+            position: fixed; width: 40vw; height: 40vw;
+            background: radial-gradient(circle, var(--blood-red) 0%, transparent 70%);
+            z-index: -1; filter: blur(80px); opacity: 0.3; pointer-events: none;
         }
 
-        /* Welcome Screen */
-        #welcome-screen {
-            height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            background: var(--love-gradient); color: white; text-align: center;
+        /* Entry Screen */
+        #gate {
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .gate-title {
+            font-family: 'Cinzel', serif; font-size: 2.5rem; letter-spacing: 10px;
+            color: var(--accent-red); margin-bottom: 40px; text-shadow: 0 0 20px var(--blood-red);
+        }
+        .gate-btn {
+            background: transparent; border: 1px solid var(--accent-red);
+            color: var(--accent-red); padding: 15px 40px; cursor: pointer;
+            font-family: 'Cinzel', serif; transition: 0.5s; letter-spacing: 3px;
+        }
+        .gate-btn:hover { background: var(--accent-red); color: white; box-shadow: 0 0 30px var(--accent-red); }
 
-        .heart-loader {
-            font-size: 50px; animation: beat 1.2s infinite; margin-bottom: 20px;
-        }
-        @keyframes beat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
-        .btn-start {
-            padding: 15px 40px; border: none; background: white;
-            color: #ff758c; font-weight: bold; border-radius: 50px;
-            cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: 0.3s; font-size: 1.1rem;
-        }
-        .btn-start:hover { transform: translateY(-5px); box-shadow: 0 15px 25px rgba(0,0,0,0.15); }
-
-        /* Story Cards */
         section {
             min-height: 100vh; display: flex; justify-content: center; align-items: center;
-            padding: 40px 20px;
+            padding: 100px 20px; position: relative;
         }
 
-        .card {
-            background: white; padding: 40px; border-radius: 30px;
-            max-width: 500px; width: 100%; text-align: center;
-            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.3);
-            position: relative; border: 2px solid #fff;
+        .glass-chamber {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 0, 0, 0.15);
+            border-radius: 2px; padding: 60px 40px;
+            max-width: 600px; width: 100%; text-align: center;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            position: relative;
         }
 
-        .date-tag {
-            background: var(--love-gradient); color: white;
-            padding: 5px 20px; border-radius: 20px; font-size: 0.8rem;
-            display: inline-block; margin-bottom: 20px;
+        .chamber-label {
+            font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 5px;
+            color: var(--accent-red); margin-bottom: 30px; display: block;
         }
 
-        h2 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: #ff758c; margin-bottom: 15px; }
-        p { line-height: 1.8; font-size: 1.05rem; margin-bottom: 25px; }
+        h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; margin-bottom: 25px; color: #fff; font-weight: 400; }
+        p { line-height: 2; font-size: 1.1rem; opacity: 0.8; margin-bottom: 40px; font-style: italic; }
 
         .btn-next {
-            text-decoration: none; color: #ff758c; font-weight: bold;
-            display: inline-block; padding: 10px 25px; border: 2px solid #ff758c;
-            border-radius: 50px; transition: 0.3s;
+            font-family: 'Cinzel', serif; text-decoration: none; color: var(--accent-red);
+            font-size: 0.8rem; letter-spacing: 2px; border-bottom: 1px solid var(--accent-red);
+            padding-bottom: 5px; transition: 0.3s;
         }
-        .btn-next:hover { background: #ff758c; color: white; }
+        .btn-next:hover { color: white; border-color: white; }
 
-        .shaman-box {
-            background: #fff0f3; padding: 15px; border-radius: 15px;
-            margin-top: 20px; font-size: 0.9rem; border-left: 4px solid #ff758c;
-            font-style: italic;
+        .shaman-whisper {
+            margin-top: 40px; padding: 20px; background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(204, 0, 0, 0.1); font-size: 0.9rem;
+            color: #996666; font-style: normal;
         }
 
-        /* Particles */
-        .particle { position: absolute; pointer-events: none; opacity: 0.5; }
+        #bg-music { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="welcome-screen">
-        <div class="heart-loader">❤️</div>
-        <h1 style="font-family: 'Dancing Script'; font-size: 3.5rem; margin-bottom: 10px;">For Meryem</h1>
-        <p style="margin-bottom: 30px; opacity: 0.9;">Our journey in colors and memories...</p>
-        <button class="btn-start" onclick="startApp()">Start Our Story</button>
+    <div id="gate">
+        <h1 class="gate-title">PRIVATE ARCHIVE</h1>
+        <button class="gate-btn" onclick="unlock()">ACCESS CORE</button>
     </div>
 
-    <audio id="main-audio" loop>
+    <audio id="bg-music" loop>
         <source src="https://www.chosic.com/wp-content/uploads/2021/04/Warm-memories-Emotional-Inspiring-Piano.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="bg-hearts" id="hearts-container"></div>
+    <div class="glow" style="top: 10%; left: 10%;"></div>
+    <div class="glow" style="bottom: 10%; right: 10%;"></div>
 
-    <section id="c1">
-        <div class="card" data-aos="zoom-in">
-            <span class="date-tag">December 26</span>
-            <h2>Radoumi is Born</h2>
-            <p>I gave you that Kuromi plush, but you gave it a soul. You named it <b>Radoumi</b>—merging our worlds into one. It's not just a toy; it's the start of us.</p>
-            <a href="#c2" class="btn-next">Next Chapter 🌸</a>
+    <section id="hall1">
+        <div class="glass-chamber" data-aos="fade-up">
+            <span class="chamber-label">DECEMBER 26 // THE GIFT</span>
+            <h2>Radoumi's Creation</h2>
+            <p>"I remember the weight of the Kuromi plush in my hands, but it was your voice that gave it a soul. You called it <b>Radoumi</b>, and in that moment, our worlds merged forever."</p>
+            <a href="#hall2" class="btn-next">PROCEED TO THE CONFESSION</a>
         </div>
     </section>
 
-    <section id="c2">
-        <div class="card" data-aos="fade-up">
-            <span class="date-tag">December 29</span>
-            <h2>The Sweetest Chaos</h2>
-            <p>The day I let my heart speak. I was so nervous, but I had to tell you. It was the best decision I ever made.</p>
-            <div class="shaman-box">
-                "Ikram the Shaman saw it coming! Still waiting for her Msmen reward for predicting this love! 🥟"
+    <section id="hall2">
+        <div class="glass-chamber" data-aos="fade-up">
+            <span class="chamber-label">DECEMBER 29 // THE TRUTH</span>
+            <h2>Beautiful Chaos</h2>
+            <p>"Terrified of the silence, I chose the truth. I spoke my heart, trembling at the thought of losing you, yet knowing I was already yours."</p>
+            <div class="shaman-whisper">
+                NOTE: The Shaman Ikram predicted every beat. The Msmen debt remains unpaid, but the prophecy is fulfilled.
             </div>
-            <a href="#c3" class="btn-next" style="margin-top: 20px;">The Covenant 💍</a>
+            <a href="#hall3" class="btn-next">PROCEED TO THE VOW</a>
         </div>
     </section>
 
-    <section id="c3">
-        <div class="card" data-aos="flip-left">
-            <span class="date-tag">January 5, 2025</span>
-            <h2>The Sacred Vow</h2>
-            <p>That phone call... I told you I wanted marriage and a real life together. My ears were burning red, but my heart was 100% sure. Meryem, you are my home.</p>
-            <a href="#final" class="btn-next">Our Future ✨</a>
+    <section id="hall3">
+        <div class="glass-chamber" data-aos="zoom-in" style="border-color: var(--accent-red);">
+            <span class="chamber-label">JANUARY 05 // THE COVENANT</span>
+            <h2>A Sacred Promise</h2>
+            <p>"The call that defined us. No games, just marriage and a future together. My ears were burning red, my voice was low, but my soul was finally at peace."</p>
+            <a href="#final" class="btn-next">THE FINAL EXHIBIT</a>
         </div>
     </section>
 
     <section id="final">
-        <div class="card" data-aos="zoom-in" style="background: var(--love-gradient); color: white;">
-            <h2 style="color: white; font-size: 3.5rem;">Forever?</h2>
-            <p>I will always choose you. Today, tomorrow, and every day after.</p>
-            <h3 style="font-family: 'Dancing Script'; font-size: 2rem;">Meryem, Will you be my Valentine?</h3>
-            <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7;">Made with ❤️ by Radona</p>
+        <div class="glass-chamber" data-aos="flip-up" style="background: var(--blood-red);">
+            <h2 style="font-size: 3rem; margin-bottom: 10px;">Meryem</h2>
+            <p style="opacity: 1; font-style: normal;">"You are my red string of fate. Today, tomorrow, and for all our remaining years."</p>
+            <h2 style="font-size: 1.5rem; letter-spacing: 5px;">WILL YOU BE MY VALENTINE?</h2>
+            <p style="font-size: 0.7rem; margin-top: 50px; opacity: 0.5;">DESIGNED WITH LOVE BY RADONA</p>
         </div>
     </section>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000 });
+        AOS.init({ duration: 1500 });
 
-        function startApp() {
-            document.getElementById('welcome-screen').style.transition = '1s';
-            document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
-            document.getElementById('main-audio').play();
-            createHearts();
+        function unlock() {
+            document.getElementById('gate').style.opacity = '0';
+            setTimeout(() => { 
+                document.getElementById('gate').style.display = 'none'; 
+            }, 1500);
+            const audio = document.getElementById('bg-music');
+            audio.volume = 0.4;
+            audio.play();
         }
 
-        function createHearts() {
-            const container = document.getElementById('hearts-container');
-            for (let i = 0; i < 30; i++) {
-                const heart = document.createElement('div');
-                heart.innerHTML = '❤️';
-                heart.className = 'particle';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.top = Math.random() * 100 + 'vh';
-                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
-                heart.style.animation = `float ${Math.random() * 3 + 2}s infinite alternate`;
-                container.appendChild(heart);
-            }
-        }
+        // Add a subtle parallax effect on glow
+        window.addEventListener('mousemove', (e) => {
+            const glows = document.querySelectorAll('.glow');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            glows.forEach(g => {
+                g.style.transform = `translate(${x * 50}px, ${y * 50}px)`;
+            });
+        });
     </script>
 </body>
 </html>
