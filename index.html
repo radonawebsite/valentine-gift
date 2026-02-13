@@ -3,158 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARCHIVES // MERYEM</title>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow+Condensed:wght@900&family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
+    <title>Our Sweet Story | Meryem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
-            --red: #ff0000;
-            --black: #050505;
-            --white: #ffffff;
+            --soft-pink: #ffdde1;
+            --love-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            --text-color: #5d4037;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: var(--black); 
-            color: var(--white); 
-            font-family: 'Space Grotesk', sans-serif;
+        body {
+            background: #fff5f7;
+            color: var(--text-color);
+            font-family: 'Quicksand', sans-serif;
             overflow-x: hidden;
         }
 
-        /* Texture Overlay (كيعطي إحساس بلي الورق قديم شوية) */
-        body::before {
-            content: ""; position: fixed; inset: 0;
-            background: url('https://www.transparenttextures.com/patterns/stardust.png');
-            opacity: 0.1; pointer-events: none; z-index: 100;
+        /* Floating Hearts Background */
+        .bg-hearts {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
         }
 
-        /* Entry Screen */
-        #entry {
-            position: fixed; inset: 0; background: var(--black); z-index: 10000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        /* Welcome Screen */
+        #welcome-screen {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            background: var(--love-gradient); color: white; text-align: center;
         }
-        .enter-btn {
-            background: var(--red); color: white; border: none;
-            padding: 20px 40px; font-family: 'Archivo Black', sans-serif;
-            font-size: 1.2rem; cursor: pointer; transform: skew(-10deg);
-            transition: 0.3s;
-        }
-        .enter-btn:hover { transform: skew(-10deg) scale(1.1); background: white; color: red; }
 
+        .heart-loader {
+            font-size: 50px; animation: beat 1.2s infinite; margin-bottom: 20px;
+        }
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .btn-start {
+            padding: 15px 40px; border: none; background: white;
+            color: #ff758c; font-weight: bold; border-radius: 50px;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: 0.3s; font-size: 1.1rem;
+        }
+        .btn-start:hover { transform: translateY(-5px); box-shadow: 0 15px 25px rgba(0,0,0,0.15); }
+
+        /* Story Cards */
         section {
-            min-height: 100vh; position: relative; padding: 10vh 5vw;
-            display: flex; align-items: center; border-bottom: 2px solid rgba(255,255,255,0.05);
+            min-height: 100vh; display: flex; justify-content: center; align-items: center;
+            padding: 40px 20px;
         }
 
-        /* الستايل ديال العناوين المائلة بحال التصويرة */
-        .big-title {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: clamp(4rem, 15vw, 12rem);
-            line-height: 0.8; text-transform: uppercase;
-            position: absolute; left: -2vw; top: 10vh;
-            color: rgba(255,255,255,0.03); z-index: 0;
-            transform: rotate(-5deg); pointer-events: none;
+        .card {
+            background: white; padding: 40px; border-radius: 30px;
+            max-width: 500px; width: 100%; text-align: center;
+            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.3);
+            position: relative; border: 2px solid #fff;
         }
 
-        .content-frame {
-            position: relative; z-index: 10; max-width: 650px;
-            background: rgba(255,255,255,0.02);
-            backdrop-filter: blur(10px);
-            border-left: 8px solid var(--red);
-            padding: 40px; border-top: 1px solid rgba(255,255,255,0.1);
+        .date-tag {
+            background: var(--love-gradient); color: white;
+            padding: 5px 20px; border-radius: 20px; font-size: 0.8rem;
+            display: inline-block; margin-bottom: 20px;
         }
 
-        /* تفاصيل صغيرة (Dots & Labels) */
-        .decoration {
-            position: absolute; top: -20px; right: -20px;
-            background: var(--white); color: var(--black);
-            padding: 5px 15px; font-family: 'Archivo Black';
-            font-size: 0.8rem; transform: rotate(3deg);
+        h2 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: #ff758c; margin-bottom: 15px; }
+        p { line-height: 1.8; font-size: 1.05rem; margin-bottom: 25px; }
+
+        .btn-next {
+            text-decoration: none; color: #ff758c; font-weight: bold;
+            display: inline-block; padding: 10px 25px; border: 2px solid #ff758c;
+            border-radius: 50px; transition: 0.3s;
+        }
+        .btn-next:hover { background: #ff758c; color: white; }
+
+        .shaman-box {
+            background: #fff0f3; padding: 15px; border-radius: 15px;
+            margin-top: 20px; font-size: 0.9rem; border-left: 4px solid #ff758c;
+            font-style: italic;
         }
 
-        h2 { 
-            font-family: 'Archivo Black', sans-serif; font-size: 2.8rem;
-            margin-bottom: 20px; text-transform: uppercase;
-            letter-spacing: -2px; color: var(--red);
-        }
-
-        p { font-size: 1.1rem; line-height: 1.8; opacity: 0.9; letter-spacing: 0.5px; }
-
-        .shaman-tag {
-            display: inline-block; margin-top: 25px;
-            background: rgba(255,0,0,0.15); color: var(--red);
-            padding: 10px 20px; border: 1px solid var(--red);
-            font-weight: bold; font-size: 0.8rem;
-        }
-
-        /* الديكور الأحمر اللي كيكون فـ الجناب */
-        .red-block {
-            position: absolute; right: 10%; bottom: 20%;
-            width: 100px; height: 100px; background: var(--red);
-            z-index: -1; opacity: 0.5; filter: blur(50px);
-        }
-
-        #music { display: none; }
+        /* Particles */
+        .particle { position: absolute; pointer-events: none; opacity: 0.5; }
     </style>
 </head>
 <body>
 
-    <div id="entry">
-        <h1 style="font-family:'Barlow Condensed'; font-size: 5rem; color: var(--red);">R//M</h1>
-        <button class="enter-btn" onclick="start()">OPEN ARCHIVES</button>
+    <div id="welcome-screen">
+        <div class="heart-loader">❤️</div>
+        <h1 style="font-family: 'Dancing Script'; font-size: 3.5rem; margin-bottom: 10px;">For Meryem</h1>
+        <p style="margin-bottom: 30px; opacity: 0.9;">Our journey in colors and memories...</p>
+        <button class="btn-start" onclick="startApp()">Start Our Story</button>
     </div>
 
-    <audio id="music" loop>
+    <audio id="main-audio" loop>
         <source src="https://www.chosic.com/wp-content/uploads/2021/04/Warm-memories-Emotional-Inspiring-Piano.mp3" type="audio/mpeg">
     </audio>
 
-    <section>
-        <div class="big-title">DATA_01</div>
-        <div class="red-block"></div>
-        <div class="content-frame" data-aos="fade-right">
-            <div class="decoration">ORIGIN: 26.12</div>
-            <h2>The Gift: Radoumi</h2>
-            <p>On Dec 26, everything changed with a Kuromi plush. You didn't just see a doll; you saw us. You named it <b>"Radoumi"</b>—the first merge of our names, our identities, and our future.</p>
+    <div class="bg-hearts" id="hearts-container"></div>
+
+    <section id="c1">
+        <div class="card" data-aos="zoom-in">
+            <span class="date-tag">December 26</span>
+            <h2>Radoumi is Born</h2>
+            <p>I gave you that Kuromi plush, but you gave it a soul. You named it <b>Radoumi</b>—merging our worlds into one. It's not just a toy; it's the start of us.</p>
+            <a href="#c2" class="btn-next">Next Chapter 🌸</a>
         </div>
     </section>
 
-    <section>
-        <div class="big-title" style="color: rgba(255,0,0,0.03);">CONFESS</div>
-        <div class="content-frame" data-aos="fade-left" style="border-left-color: #fff; margin-left: auto;">
-            <div class="decoration" style="background:var(--red); color:#fff;">ERROR: 29.12</div>
-            <h2>Honest Chaos</h2>
-            <p>A day of beautiful terror. I spoke my truth, trembling at the thought of losing you, but knowing I couldn't stay silent. It was raw, it was real.</p>
-            <div class="shaman-tag">
-                // SHAMAN IKRAM: PROPHECY RECORDED. MSMEN_REWARD_PENDING.
+    <section id="c2">
+        <div class="card" data-aos="fade-up">
+            <span class="date-tag">December 29</span>
+            <h2>The Sweetest Chaos</h2>
+            <p>The day I let my heart speak. I was so nervous, but I had to tell you. It was the best decision I ever made.</p>
+            <div class="shaman-box">
+                "Ikram the Shaman saw it coming! Still waiting for her Msmen reward for predicting this love! 🥟"
             </div>
+            <a href="#c3" class="btn-next" style="margin-top: 20px;">The Covenant 💍</a>
         </div>
     </section>
 
-    <section>
-        <div class="big-title">COVENANT</div>
-        <div class="content-frame" data-aos="zoom-in" style="border: 2px solid var(--red); border-left: 15px solid var(--red);">
-            <div class="decoration">VOW: 05.01</div>
-            <h2>The Promise</h2>
-            <p>The January 5th call. No more "maybe." I told you I wanted marriage, a life, and a forever. My ears were burning, my words were clumsy, but my heart was home. Meryem, you became my peace.</p>
+    <section id="c3">
+        <div class="card" data-aos="flip-left">
+            <span class="date-tag">January 5, 2025</span>
+            <h2>The Sacred Vow</h2>
+            <p>That phone call... I told you I wanted marriage and a real life together. My ears were burning red, but my heart was 100% sure. Meryem, you are my home.</p>
+            <a href="#final" class="btn-next">Our Future ✨</a>
         </div>
     </section>
 
-    <section style="justify-content: center; text-align: center; border: none;">
-        <div data-aos="fade-up">
-            <h1 style="font-family:'Barlow Condensed'; font-size: 15vw; color: var(--red);">FOREVER?</h1>
-            <p style="font-family:'Archivo Black'; font-size: 1.5rem;">[MERYEM + RADONA]</p>
-            <p style="margin-top: 40px; opacity: 0.5;">Will you be my Valentine, today and every day?</p>
+    <section id="final">
+        <div class="card" data-aos="zoom-in" style="background: var(--love-gradient); color: white;">
+            <h2 style="color: white; font-size: 3.5rem;">Forever?</h2>
+            <p>I will always choose you. Today, tomorrow, and every day after.</p>
+            <h3 style="font-family: 'Dancing Script'; font-size: 2rem;">Meryem, Will you be my Valentine?</h3>
+            <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7;">Made with ❤️ by Radona</p>
         </div>
     </section>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ duration: 1000 });
-        function start() {
-            document.getElementById('entry').style.display = 'none';
-            const audio = document.getElementById('music');
-            audio.volume = 0.3;
-            audio.play();
+
+        function startApp() {
+            document.getElementById('welcome-screen').style.transition = '1s';
+            document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
+            document.getElementById('main-audio').play();
+            createHearts();
+        }
+
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.className = 'particle';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = Math.random() * 100 + 'vh';
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+                heart.style.animation = `float ${Math.random() * 3 + 2}s infinite alternate`;
+                container.appendChild(heart);
+            }
         }
     </script>
 </body>
