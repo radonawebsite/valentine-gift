@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Glass Gallery | Radona & Maryam</title>
+    <title>The Museum of Us | Meryem</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
-            --dark-red: #120303;
-            --gold: #c5a028;
+            --dark-red: #0f0202;
+            --gold: #b39359;
             --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.08);
         }
@@ -17,12 +17,11 @@
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
         body {
             background: var(--dark-red);
-            color: #ececec;
+            color: #f2f2f2;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
 
-        /* Ambient Background Canvas */
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
 
         /* Welcome Screen */
@@ -30,57 +29,59 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--dark-red); z-index: 9999; display: flex;
             flex-direction: column; justify-content: center; align-items: center;
-            transition: 1.5s ease-in-out;
+            transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .enter-btn {
-            padding: 18px 45px; border: 1px solid var(--gold); background: transparent;
+            padding: 20px 50px; border: 1px solid var(--gold); background: transparent;
             color: var(--gold); cursor: pointer; font-family: 'Playfair Display', serif;
-            font-size: 1.2rem; border-radius: 2px; letter-spacing: 3px; transition: 0.5s;
+            font-size: 1.1rem; border-radius: 2px; letter-spacing: 4px; transition: 0.6s;
         }
-        .enter-btn:hover { background: var(--gold); color: #000; }
+        .enter-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 30px rgba(179, 147, 89, 0.2); }
 
         section {
             min-height: 100vh; display: flex; justify-content: center;
-            align-items: center; padding: 60px 20px; position: relative;
+            align-items: center; padding: 80px 20px; position: relative;
         }
 
         .glass-chamber {
             background: var(--glass);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
             border: 1px solid var(--border);
-            padding: 50px 35px; border-radius: 20px;
-            max-width: 550px; width: 100%; text-align: center;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            padding: 60px 40px; border-radius: 4px;
+            max-width: 600px; width: 100%; text-align: center;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.6);
         }
 
-        .label { font-size: 0.65rem; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; margin-bottom: 25px; display: block; }
-        h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--gold); margin-bottom: 25px; font-weight: 600; font-style: italic; }
-        p { font-weight: 300; line-height: 1.9; font-size: 1.05rem; opacity: 0.8; margin-bottom: 30px; }
+        .label { font-size: 0.6rem; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; margin-bottom: 30px; display: block; opacity: 0.8; }
+        h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--gold); margin-bottom: 25px; font-weight: 400; font-style: italic; }
+        p { font-weight: 300; line-height: 2; font-size: 1.05rem; opacity: 0.85; margin-bottom: 35px; }
 
         .next-btn {
-            display: inline-block; padding: 12px 25px; border: 1px solid var(--border);
-            color: var(--gold); text-decoration: none; font-size: 0.75rem;
-            letter-spacing: 2px; transition: 0.4s;
+            display: inline-block; padding: 15px 30px; border: 1px solid var(--border);
+            color: var(--gold); text-decoration: none; font-size: 0.7rem;
+            letter-spacing: 3px; transition: 0.4s;
         }
-        .next-btn:hover { border-color: var(--gold); background: rgba(197, 160, 40, 0.05); }
+        .next-btn:hover { border-color: var(--gold); background: rgba(179, 147, 89, 0.05); }
 
         .shaman-note {
-            margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.02);
-            border: 1px dashed var(--border); font-size: 0.9rem; font-style: italic; color: #d1d1d1;
+            margin-top: 40px; padding: 25px; background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(179, 147, 89, 0.15); font-size: 0.9rem; font-style: italic; color: #d1d1d1;
+            line-height: 1.6;
         }
 
         @media (max-width: 768px) {
-            h2 { font-size: 1.8rem; }
-            .glass-chamber { padding: 40px 20px; }
+            h2 { font-size: 1.9rem; }
+            .glass-chamber { padding: 45px 25px; }
         }
     </style>
 </head>
 <body>
 
     <div id="overlay">
-        <h2 style="margin-bottom: 30px; color: #fff;">The Museum of Us</h2>
-        <button class="enter-btn" onclick="startExperience()">OPEN GALLERY</button>
+        <span class="label" style="margin-bottom: 10px;">Private Collection</span>
+        <h2 style="margin-bottom: 40px; color: #fff; font-size: 1.8rem;">The Museum of Us</h2>
+        <button class="enter-btn" onclick="startExperience()">UNVEIL GALLERY</button>
     </div>
 
     <audio id="main-audio" loop>
@@ -91,47 +92,47 @@
 
     <section id="room1">
         <div class="glass-chamber" data-aos="fade-up">
-            <span class="label">The First Offering | Dec 26</span>
-            <h2>The Story of Radoumi</h2>
-            <p>I remember the 26th of December like it was yesterday. Giving you that Kuromi plush was my first true gift to anyone. But you made it special—you named it <b>"Radoumi"</b>, a piece of me (Radona) merged with your favorite world. It was the first sign that our souls were meant to intertwine.</p>
-            <a href="#room2" class="next-btn">CONTINUE JOURNEY</a>
+            <span class="label">Hall I | Dec 26</span>
+            <h2>The Legend of Radoumi</h2>
+            <p>I remember December 26th—the day I gave you my very first gift. It was a Kuromi plush, but you gave it a soul when you named it <b>"Radoumi"</b>. A name that forever binds my identity (Radona) with yours. It was our first masterpiece.</p>
+            <a href="#room2" class="next-btn">PROCEED</a>
         </div>
     </section>
 
     <section id="room2">
         <div class="glass-chamber" data-aos="fade-up">
-            <span class="label">The Revelation | Dec 29</span>
-            <h2>Beautiful Chaos</h2>
-            <p>I confessed on the 29th, driven by a mix of fear and desperate honesty. I was so afraid of losing you, yet I couldn't breathe without telling you the truth.</p>
+            <span class="label">Hall II | Dec 29</span>
+            <h2>The Honest Chaos</h2>
+            <p>On the 29th, I spoke the truth that my heart couldn't contain any longer. Terrified yet certain, I took a leap into the unknown just to be yours.</p>
             <div class="shaman-note">
-                "Ikram the Shaman already knew. She predicted our love and demanded her <b>Msmen</b> reward. It turns out, we were just following the script she already saw."
+                "Ikram the Shaman already predicted this. She saw our story unfolding and is still waiting for her <b>Msmen</b> reward. Fate had a plan, and she was its messenger."
             </div>
-            <a href="#room3" class="next-btn" style="margin-top: 25px;">THE JANUARY VOW</a>
+            <a href="#room3" class="next-btn" style="margin-top: 30px;">THE JANUARY VOW</a>
         </div>
     </section>
 
     <section id="room3">
         <div class="glass-chamber" data-aos="zoom-in" style="border-color: var(--gold);">
-            <span class="label">The Beginning | Jan 5, 2025</span>
-            <h2>The Sacred Promise</h2>
-            <p>That phone call was the bridge to our future. I told you I wanted marriage, a life, a forever. My ears were burning, my heart was loud, but my soul was finally at peace when you said 'Yes'.</p>
+            <span class="label">Hall III | Jan 5, 2025</span>
+            <h2>A Lifetime Promise</h2>
+            <p>That phone call was the moment whispers became reality. I promised you marriage, a future, and a devotion that never fades. My ears were red, my voice was low, but my soul was finally home.</p>
             <a href="#final" class="next-btn">FINAL EXHIBIT</a>
         </div>
     </section>
 
     <section id="final">
         <div class="glass-chamber" data-aos="fade-up">
-            <h2 style="font-size: 2.8rem;">Forever Yours</h2>
-            <p>I will never let go. You are my home, my future wife, and my greatest blessing. This museum has many halls yet to be built, and I want to build them all with you.</p>
-            <span class="label" style="color:#fff;">Maryam,</span>
-            <h2 style="font-size: 1.5rem; margin-top:10px;">Will you be my Valentine?</h2>
-            <p style="font-size: 0.6rem; margin-top: 50px; opacity: 0.3; letter-spacing: 2px;">HANDCRAFTED BY RADONA | 2026</p>
+            <h2 style="font-size: 3rem;">Forever Yours</h2>
+            <p>I will never let go. You are my home, my future, and my greatest truth. Our story has just begun.</p>
+            <span class="label" style="color:#fff; margin-bottom: 10px;">To my dearest Meryem,</span>
+            <h2 style="font-size: 1.6rem; margin-top:0px;">Will you be my Valentine?</h2>
+            <p style="font-size: 0.6rem; margin-top: 60px; opacity: 0.4; letter-spacing: 3px;">CURATED BY RADONA | 2026</p>
         </div>
     </section>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1500 });
+        AOS.init({ duration: 1800 });
 
         function startExperience() {
             document.getElementById('overlay').style.opacity = '0';
@@ -141,7 +142,6 @@
             audio.play();
         }
 
-        // Elegant Background Particles
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -152,11 +152,11 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.v = Math.random() * 0.3 + 0.1;
-                this.s = Math.random() * 1.5;
+                this.v = Math.random() * 0.2 + 0.05;
+                this.s = Math.random() * 1.2;
             }
             draw() {
-                ctx.fillStyle = "rgba(197, 160, 40, 0.2)";
+                ctx.fillStyle = "rgba(179, 147, 89, 0.15)";
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.s, 0, Math.PI*2);
                 ctx.fill();
@@ -164,13 +164,17 @@
                 if(this.y < 0) this.y = canvas.height;
             }
         }
-        for(let i=0; i<100; i++) particles.push(new P());
+        for(let i=0; i<80; i++) particles.push(new P());
         function anim() {
             ctx.clearRect(0,0,canvas.width,canvas.height);
             particles.forEach(p => p.draw());
             requestAnimationFrame(anim);
         }
         anim();
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
