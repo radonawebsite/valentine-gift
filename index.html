@@ -3,164 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Dark Red Archives | Meryem</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <title>Meryem | The Eternal Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;500;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --dark-red: #2b0303;
-            --blood-red: #660000;
-            --accent-red: #cc0000;
-            --glass: rgba(255, 255, 255, 0.03);
+            --dark-red: #1a0202;
+            --bright-red: #ff0000;
+            --accent: #ff3333;
+            --glass: rgba(20, 0, 0, 0.6);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: #080101;
-            color: #f5f5f5;
-            font-family: 'Lora', serif;
+            background-color: var(--dark-red);
+            color: white;
+            font-family: 'Space Grotesk', sans-serif;
             overflow-x: hidden;
+            height: 100%;
         }
 
-        /* Ambient Dark Red Glows */
-        .glow {
-            position: fixed; width: 40vw; height: 40vw;
-            background: radial-gradient(circle, var(--blood-red) 0%, transparent 70%);
-            z-index: -1; filter: blur(80px); opacity: 0.3; pointer-events: none;
+        #canvas-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
         }
 
-        /* Entry Screen */
-        #gate {
-            position: fixed; inset: 0; background: #000; z-index: 10000;
+        /* Loading Overlay */
+        #loader {
+            position: fixed; inset: 0; background: black; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .gate-title {
-            font-family: 'Cinzel', serif; font-size: 2.5rem; letter-spacing: 10px;
-            color: var(--accent-red); margin-bottom: 40px; text-shadow: 0 0 20px var(--blood-red);
-        }
-        .gate-btn {
-            background: transparent; border: 1px solid var(--accent-red);
-            color: var(--accent-red); padding: 15px 40px; cursor: pointer;
-            font-family: 'Cinzel', serif; transition: 0.5s; letter-spacing: 3px;
-        }
-        .gate-btn:hover { background: var(--accent-red); color: white; box-shadow: 0 0 30px var(--accent-red); }
-
-        section {
-            min-height: 100vh; display: flex; justify-content: center; align-items: center;
-            padding: 100px 20px; position: relative;
+        .loading-text {
+            font-family: 'Syncopate', sans-serif; font-size: 1rem; letter-spacing: 5px;
+            animation: pulse 2s infinite; color: var(--bright-red);
         }
 
-        .glass-chamber {
+        /* Hero Section */
+        .hero {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+        }
+        .hero h1 {
+            font-family: 'Syncopate', sans-serif; font-size: 10vw;
+            line-height: 0.8; text-transform: uppercase;
+            background: linear-gradient(to bottom, #fff, #660000);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* Timeline Content */
+        .section {
+            min-height: 100vh; display: flex; align-items: center;
+            justify-content: center; padding: 100px 20px;
+            perspective: 1000px;
+        }
+
+        .glass-box {
             background: var(--glass);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 0, 0, 0.15);
-            border-radius: 2px; padding: 60px 40px;
-            max-width: 600px; width: 100%; text-align: center;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 50px; border-radius: 4px;
+            max-width: 800px; width: 100%;
+            transform-style: preserve-3d;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.5);
             position: relative;
         }
 
-        .chamber-label {
-            font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 5px;
-            color: var(--accent-red); margin-bottom: 30px; display: block;
+        .date-badge {
+            font-family: 'Syncopate', sans-serif; font-size: 0.8rem;
+            color: var(--bright-red); margin-bottom: 20px; display: block;
+            border-left: 3px solid var(--bright-red); padding-left: 15px;
         }
 
-        h2 { font-family: 'Cinzel', serif; font-size: 2.2rem; margin-bottom: 25px; color: #fff; font-weight: 400; }
-        p { line-height: 2; font-size: 1.1rem; opacity: 0.8; margin-bottom: 40px; font-style: italic; }
+        h2 { font-family: 'Syncopate', sans-serif; font-size: 2.5rem; margin-bottom: 25px; color: #fff; }
+        p { font-size: 1.2rem; line-height: 1.8; opacity: 0.8; margin-bottom: 30px; font-weight: 300; }
 
-        .btn-next {
-            font-family: 'Cinzel', serif; text-decoration: none; color: var(--accent-red);
-            font-size: 0.8rem; letter-spacing: 2px; border-bottom: 1px solid var(--accent-red);
-            padding-bottom: 5px; transition: 0.3s;
-        }
-        .btn-next:hover { color: white; border-color: white; }
-
-        .shaman-whisper {
-            margin-top: 40px; padding: 20px; background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(204, 0, 0, 0.1); font-size: 0.9rem;
-            color: #996666; font-style: normal;
+        .shaman-card {
+            background: rgba(255, 0, 0, 0.1); border: 1px dashed var(--bright-red);
+            padding: 20px; border-radius: 4px; font-size: 0.95rem;
+            font-style: italic; color: #ff9999;
         }
 
-        #bg-music { display: none; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--bright-red); }
+
+        /* Floating Hearts */
+        .floating-heart {
+            position: absolute; color: var(--bright-red);
+            font-size: 1.5rem; pointer-events: none; opacity: 0;
+        }
+
+        #final-msg {
+            font-family: 'Dancing Script', cursive; font-size: 4rem;
+            color: var(--bright-red); text-shadow: 0 0 20px rgba(255,0,0,0.5);
+        }
     </style>
 </head>
 <body>
 
-    <div id="gate">
-        <h1 class="gate-title">PRIVATE ARCHIVE</h1>
-        <button class="gate-btn" onclick="unlock()">ACCESS CORE</button>
+    <div id="loader">
+        <div class="loading-text">INITIALIZING CORE...</div>
+        <button id="start-btn" style="display:none; margin-top:20px; padding:10px 30px; background:var(--bright-red); color:white; border:none; cursor:pointer; font-family:'Syncopate';">UNLOCK ARCHIVE</button>
     </div>
+
+    <div id="canvas-container"></div>
 
     <audio id="bg-music" loop>
         <source src="https://www.chosic.com/wp-content/uploads/2021/04/Warm-memories-Emotional-Inspiring-Piano.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="glow" style="top: 10%; left: 10%;"></div>
-    <div class="glow" style="bottom: 10%; right: 10%;"></div>
+    <div class="hero">
+        <h1 data-gsap="fade-up">MERYEM</h1>
+        <p style="letter-spacing: 10px; font-weight: 300; margin-top: 20px;">[ THE FOREVER LOGS ]</p>
+    </div>
 
-    <section id="hall1">
-        <div class="glass-chamber" data-aos="fade-up">
-            <span class="chamber-label">DECEMBER 26 // THE GIFT</span>
-            <h2>Radoumi's Creation</h2>
-            <p>"I remember the weight of the Kuromi plush in my hands, but it was your voice that gave it a soul. You called it <b>Radoumi</b>, and in that moment, our worlds merged forever."</p>
-            <a href="#hall2" class="btn-next">PROCEED TO THE CONFESSION</a>
+    <div class="section">
+        <div class="glass-box" data-gsap="reveal">
+            <span class="date-badge">SATURDAY | DECEMBER 26, 2024</span>
+            <h2>The "Radoumi" Origin</h2>
+            <p>On this precise day, a gift transcended its physical form. I handed you a Kuromi plush, but your heart saw more. You named it <b>Radoumi</b>—a fusion of our souls (Radona + Meryem). It was the day our shared identity began.</p>
         </div>
-    </section>
+    </div>
 
-    <section id="hall2">
-        <div class="glass-chamber" data-aos="fade-up">
-            <span class="chamber-label">DECEMBER 29 // THE TRUTH</span>
-            <h2>Beautiful Chaos</h2>
-            <p>"Terrified of the silence, I chose the truth. I spoke my heart, trembling at the thought of losing you, yet knowing I was already yours."</p>
-            <div class="shaman-whisper">
-                NOTE: The Shaman Ikram predicted every beat. The Msmen debt remains unpaid, but the prophecy is fulfilled.
+    <div class="section">
+        <div class="glass-box" data-gsap="reveal">
+            <span class="date-badge">TUESDAY | DECEMBER 29, 2024</span>
+            <h2>The Beautiful Confession</h2>
+            <p>Chaos turned into clarity. I broke the silence with words that were heavy with love and light with truth. I chose to risk everything just to be yours.</p>
+            <div class="shaman-card">
+                // SYSTEM LOG: Ikram the Shaman (The Prophet) knew this before us. 
+                // STATUS: Msmen payment for Ikram is still pending. 
             </div>
-            <a href="#hall3" class="btn-next">PROCEED TO THE VOW</a>
         </div>
-    </section>
+    </div>
 
-    <section id="hall3">
-        <div class="glass-chamber" data-aos="zoom-in" style="border-color: var(--accent-red);">
-            <span class="chamber-label">JANUARY 05 // THE COVENANT</span>
-            <h2>A Sacred Promise</h2>
-            <p>"The call that defined us. No games, just marriage and a future together. My ears were burning red, my voice was low, but my soul was finally at peace."</p>
-            <a href="#final" class="btn-next">THE FINAL EXHIBIT</a>
+    <div class="section">
+        <div class="glass-box" data-gsap="reveal">
+            <span class="date-badge">SUNDAY | JANUARY 05, 2025</span>
+            <h2>The Covenant of Forever</h2>
+            <p>That phone call was the most important meeting of my life. I didn't want a "story"; I wanted a life. Marriage, home, and eternity. My ears were burning, my voice was shaking, but Meryem, my heart was finally HOME.</p>
         </div>
-    </section>
+    </div>
 
-    <section id="final">
-        <div class="glass-chamber" data-aos="flip-up" style="background: var(--blood-red);">
-            <h2 style="font-size: 3rem; margin-bottom: 10px;">Meryem</h2>
-            <p style="opacity: 1; font-style: normal;">"You are my red string of fate. Today, tomorrow, and for all our remaining years."</p>
-            <h2 style="font-size: 1.5rem; letter-spacing: 5px;">WILL YOU BE MY VALENTINE?</h2>
-            <p style="font-size: 0.7rem; margin-top: 50px; opacity: 0.5;">DESIGNED WITH LOVE BY RADONA</p>
+    <div class="section" style="text-align: center;">
+        <div data-gsap="zoom-in">
+            <h1 id="final-msg">Will you be my Valentine?</h1>
+            <p style="font-family:'Syncopate'; font-size: 0.8rem; margin-top: 20px;">TO: MERYEM_01 // FROM: RADONA</p>
+            <p style="margin-top: 50px; opacity: 0.4;">[ SCROLL TO END THE ARCHIVE ]</p>
         </div>
-    </section>
+    </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <script>
-        AOS.init({ duration: 1500 });
+        // Three.js Background (Future Visuals)
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        function unlock() {
-            document.getElementById('gate').style.opacity = '0';
-            setTimeout(() => { 
-                document.getElementById('gate').style.display = 'none'; 
-            }, 1500);
-            const audio = document.getElementById('bg-music');
-            audio.volume = 0.4;
-            audio.play();
+        const particlesGeometry = new THREE.BufferGeometry();
+        const posArray = new Float32Array(5000 * 3);
+        for(let i=0; i<5000*3; i++) posArray[i] = (Math.random() - 0.5) * 10;
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const material = new THREE.PointsMaterial({ size: 0.005, color: 0xff0000 });
+        const particlesMesh = new THREE.Points(particlesGeometry, material);
+        scene.add(particlesMesh);
+        camera.position.z = 2;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            particlesMesh.rotation.y += 0.001;
+            particlesMesh.rotation.x += 0.0005;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        function initGSAP() {
+            gsap.utils.toArray('.section').forEach((section, i) => {
+                gsap.from(section.querySelector('.glass-box'), {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 100,
+                    opacity: 0,
+                    rotationX: -20,
+                    duration: 1.5,
+                    ease: "power4.out"
+                });
+            });
         }
 
-        // Add a subtle parallax effect on glow
-        window.addEventListener('mousemove', (e) => {
-            const glows = document.querySelectorAll('.glow');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            glows.forEach(g => {
-                g.style.transform = `translate(${x * 50}px, ${y * 50}px)`;
+        // Loader and Music
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            const startBtn = document.getElementById('start-btn');
+            const loadingText = document.querySelector('.loading-text');
+            
+            loadingText.innerText = "ACCESS GRANTED.";
+            startBtn.style.display = "block";
+        });
+
+        function startApp() {
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('bg-music').play();
+            initGSAP();
+            
+            // Trigger confetti on the question
+            ScrollTrigger.create({
+                trigger: "#final-msg",
+                onEnter: () => {
+                    confetti({
+                        particleCount: 150,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors: ['#ff0000', '#660000', '#ffffff']
+                    });
+                }
             });
+        }
+
+        document.getElementById('start-btn').addEventListener('click', startApp);
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
 </body>
