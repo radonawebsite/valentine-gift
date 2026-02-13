@@ -3,163 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE ARCHIVES // MERYEM</title>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>ARCHIVES // MERYEM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow+Condensed:wght@900&family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #FF0000;
-            --bg: #000000;
-            --text: #FFFFFF;
-            --border-thin: 1px solid rgba(255,255,255,0.2);
-            --border-thick: 4px solid #FFFFFF;
+            --red: #ff0000;
+            --black: #050505;
+            --white: #ffffff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            background: var(--bg); 
-            color: var(--text); 
-            font-family: 'Space Mono', monospace;
+            background: var(--black); 
+            color: var(--white); 
+            font-family: 'Space Grotesk', sans-serif;
             overflow-x: hidden;
         }
 
-        /* Loading / Start */
-        #entry-gate {
-            position: fixed; inset: 0; background: #000; z-index: 10000;
+        /* Texture Overlay (كيعطي إحساس بلي الورق قديم شوية) */
+        body::before {
+            content: ""; position: fixed; inset: 0;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.1; pointer-events: none; z-index: 100;
+        }
+
+        /* Entry Screen */
+        #entry {
+            position: fixed; inset: 0; background: var(--black); z-index: 10000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-        .start-trigger {
-            background: none; border: var(--border-thick); color: #fff;
-            padding: 20px 60px; font-family: 'Archivo Black', sans-serif;
-            font-size: 1.5rem; cursor: pointer; transition: 0.3s;
+        .enter-btn {
+            background: var(--red); color: white; border: none;
+            padding: 20px 40px; font-family: 'Archivo Black', sans-serif;
+            font-size: 1.2rem; cursor: pointer; transform: skew(-10deg);
+            transition: 0.3s;
         }
-        .start-trigger:hover { background: #fff; color: #000; }
+        .enter-btn:hover { transform: skew(-10deg) scale(1.1); background: white; color: red; }
 
-        /* Main Layout */
         section {
-            min-height: 100vh; width: 100%; display: flex; align-items: center;
-            padding: 5vw; border-bottom: var(--border-thin);
-            position: relative;
+            min-height: 100vh; position: relative; padding: 10vh 5vw;
+            display: flex; align-items: center; border-bottom: 2px solid rgba(255,255,255,0.05);
         }
 
-        /* Large Background Numbers (Style like '00') */
-        .bg-number {
-            position: absolute; right: 5%; top: 10%;
-            font-family: 'Archivo Black', sans-serif;
-            font-size: 15vw; color: rgba(255,255,255,0.03);
-            z-index: -1; line-height: 1;
+        /* الستايل ديال العناوين المائلة بحال التصويرة */
+        .big-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(4rem, 15vw, 12rem);
+            line-height: 0.8; text-transform: uppercase;
+            position: absolute; left: -2vw; top: 10vh;
+            color: rgba(255,255,255,0.03); z-index: 0;
+            transform: rotate(-5deg); pointer-events: none;
         }
 
-        /* The "Window" Card */
-        .window-frame {
-            border: 2px solid #fff; background: #0a0a0a;
-            width: 100%; max-width: 700px;
-            box-shadow: 15px 15px 0px var(--primary);
-            position: relative;
+        .content-frame {
+            position: relative; z-index: 10; max-width: 650px;
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(10px);
+            border-left: 8px solid var(--red);
+            padding: 40px; border-top: 1px solid rgba(255,255,255,0.1);
         }
-        .window-top {
-            background: #fff; color: #000; padding: 5px 15px;
-            font-weight: bold; display: flex; justify-content: space-between;
-            font-size: 0.8rem;
-        }
-        .window-body { padding: 40px; }
 
-        .tag-label {
-            background: var(--primary); color: #fff;
-            display: inline-block; padding: 4px 12px;
-            font-size: 0.7rem; font-weight: bold; margin-bottom: 20px;
+        /* تفاصيل صغيرة (Dots & Labels) */
+        .decoration {
+            position: absolute; top: -20px; right: -20px;
+            background: var(--white); color: var(--black);
+            padding: 5px 15px; font-family: 'Archivo Black';
+            font-size: 0.8rem; transform: rotate(3deg);
         }
 
         h2 { 
-            font-family: 'Archivo Black', sans-serif; font-size: 2.5rem;
-            text-transform: uppercase; line-height: 1.1; margin-bottom: 25px;
-            color: var(--text);
+            font-family: 'Archivo Black', sans-serif; font-size: 2.8rem;
+            margin-bottom: 20px; text-transform: uppercase;
+            letter-spacing: -2px; color: var(--red);
         }
 
-        p { font-size: 1.1rem; line-height: 1.7; opacity: 0.8; }
+        p { font-size: 1.1rem; line-height: 1.8; opacity: 0.9; letter-spacing: 0.5px; }
 
-        .shaman-alert {
-            margin-top: 30px; border-top: 1px dashed var(--primary);
-            padding-top: 20px; color: var(--primary); font-size: 0.9rem;
+        .shaman-tag {
+            display: inline-block; margin-top: 25px;
+            background: rgba(255,0,0,0.15); color: var(--red);
+            padding: 10px 20px; border: 1px solid var(--red);
+            font-weight: bold; font-size: 0.8rem;
         }
 
-        .scroll-hint {
-            position: absolute; bottom: 30px; left: 5vw;
-            font-size: 0.7rem; letter-spacing: 2px;
+        /* الديكور الأحمر اللي كيكون فـ الجناب */
+        .red-block {
+            position: absolute; right: 10%; bottom: 20%;
+            width: 100px; height: 100px; background: var(--red);
+            z-index: -1; opacity: 0.5; filter: blur(50px);
         }
 
-        /* Audio Player hidden */
-        #bg-music { display: none; }
-
+        #music { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="entry-gate">
-        <h1 style="font-family:'Archivo Black'; margin-bottom: 20px;">SYSTEM.RADONA_01</h1>
-        <button class="start-trigger" onclick="init()">RUN ACCESS</button>
+    <div id="entry">
+        <h1 style="font-family:'Barlow Condensed'; font-size: 5rem; color: var(--red);">R//M</h1>
+        <button class="enter-btn" onclick="start()">OPEN ARCHIVES</button>
     </div>
 
-    <audio id="bg-music" loop>
+    <audio id="music" loop>
         <source src="https://www.chosic.com/wp-content/uploads/2021/04/Warm-memories-Emotional-Inspiring-Piano.mp3" type="audio/mpeg">
     </audio>
 
     <section>
-        <div class="bg-number">01</div>
-        <div class="window-frame" data-aos="fade-right">
-            <div class="window-top"><span>DATA_ENTRY: 26_DEC</span> <span>[X]</span></div>
-            <div class="window-body">
-                <span class="tag-label">OBJECT IDENTIFIED: RADOUMI</span>
-                <h2>The First Offering</h2>
-                <p>A Kuromi plush that carried the weight of my heart. You merged my name with the doll, and <b>Radoumi</b> was born. A simple gift turned into a legendary symbol of us.</p>
-            </div>
+        <div class="big-title">DATA_01</div>
+        <div class="red-block"></div>
+        <div class="content-frame" data-aos="fade-right">
+            <div class="decoration">ORIGIN: 26.12</div>
+            <h2>The Gift: Radoumi</h2>
+            <p>On Dec 26, everything changed with a Kuromi plush. You didn't just see a doll; you saw us. You named it <b>"Radoumi"</b>—the first merge of our names, our identities, and our future.</p>
         </div>
-        <div class="scroll-hint">SCROLL_FOR_MORE >></div>
     </section>
 
     <section>
-        <div class="bg-number">02</div>
-        <div class="window-frame" data-aos="fade-left" style="box-shadow: 15px 15px 0px #fff; border-color: var(--primary);">
-            <div class="window-top" style="background: var(--primary); color:#fff;"><span>INCIDENT_REPORT: 29_DEC</span> <span>[!]</span></div>
-            <div class="window-body">
-                <span class="tag-label" style="background:#fff; color:#000;">THE CONFESSION</span>
-                <h2>Honest Chaos</h2>
-                <p>Terrified and trembling. I spoke words I couldn't hold back. I thought I'd lose a friend, but I was building a future.</p>
-                <div class="shaman-alert">
-                    // ALERT: IKRAM_THE_SHAMAN PREDICTED THIS.
-                    // STATUS: WAITING FOR MSMEN.
-                </div>
+        <div class="big-title" style="color: rgba(255,0,0,0.03);">CONFESS</div>
+        <div class="content-frame" data-aos="fade-left" style="border-left-color: #fff; margin-left: auto;">
+            <div class="decoration" style="background:var(--red); color:#fff;">ERROR: 29.12</div>
+            <h2>Honest Chaos</h2>
+            <p>A day of beautiful terror. I spoke my truth, trembling at the thought of losing you, but knowing I couldn't stay silent. It was raw, it was real.</p>
+            <div class="shaman-tag">
+                // SHAMAN IKRAM: PROPHECY RECORDED. MSMEN_REWARD_PENDING.
             </div>
         </div>
     </section>
 
     <section>
-        <div class="bg-number">03</div>
-        <div class="window-frame" data-aos="zoom-in">
-            <div class="window-top"><span>PROTOCOL: THE_COVENANT</span> <span>[ACTIVE]</span></div>
-            <div class="window-body">
-                <span class="tag-label">JAN_05_2025</span>
-                <h2>The Promise</h2>
-                <p>The phone call. No games, just marriage. My ears were burning, my voice was lost, but I knew. That day, Meryem, you became my world.</p>
-            </div>
+        <div class="big-title">COVENANT</div>
+        <div class="content-frame" data-aos="zoom-in" style="border: 2px solid var(--red); border-left: 15px solid var(--red);">
+            <div class="decoration">VOW: 05.01</div>
+            <h2>The Promise</h2>
+            <p>The January 5th call. No more "maybe." I told you I wanted marriage, a life, and a forever. My ears were burning, my words were clumsy, but my heart was home. Meryem, you became my peace.</p>
         </div>
     </section>
 
-    <section style="background: var(--primary); color: #000;">
-        <div data-aos="flip-up">
-            <h1 style="font-family:'Archivo Black'; font-size: 10vw; line-height: 0.9;">VALENTINE 2026?</h1>
-            <p style="margin-top: 20px; font-weight: bold;">[Y/N] _ STICKING WITH YOU FOREVER.</p>
+    <section style="justify-content: center; text-align: center; border: none;">
+        <div data-aos="fade-up">
+            <h1 style="font-family:'Barlow Condensed'; font-size: 15vw; color: var(--red);">FOREVER?</h1>
+            <p style="font-family:'Archivo Black'; font-size: 1.5rem;">[MERYEM + RADONA]</p>
+            <p style="margin-top: 40px; opacity: 0.5;">Will you be my Valentine, today and every day?</p>
         </div>
     </section>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 800 });
-        function init() {
-            document.getElementById('entry-gate').style.display = 'none';
-            const music = document.getElementById('bg-music');
-            music.volume = 0.3;
-            music.play();
+        AOS.init({ duration: 1000 });
+        function start() {
+            document.getElementById('entry').style.display = 'none';
+            const audio = document.getElementById('music');
+            audio.volume = 0.3;
+            audio.play();
         }
     </script>
 </body>
